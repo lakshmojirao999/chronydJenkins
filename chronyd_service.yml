@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+  become_user: root
+  tasks:
+   - name: Check if chronyd is running or not and fixing
+     command: systemctl status chronyd
+     ignore_errors: yes
+     changed_when: false
+     register: service_chronyd_status
+
+   - name: status of chronyd on host
+     command: systemctl start chronyd
+     when: service_chronyd_status is failed
